@@ -1,6 +1,7 @@
 /bin
 /build/
 /war/
+/.idea/workspace.xml
 
 
 *.class
