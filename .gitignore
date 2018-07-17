@@ -1,8 +1,8 @@
 /bin
 /build/
 /war/
-/.idea/workspace.xml
-
+/.idea/
+/WebContent/build.txt
 
 *.class
 
@@ -14,4 +14,3 @@
 
 *.war
 
-WebContent/build.txt
