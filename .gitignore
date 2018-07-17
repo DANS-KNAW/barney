@@ -3,6 +3,7 @@
 /war/
 /.idea/
 /WebContent/build.txt
+/*.iml
 
 *.class
 
