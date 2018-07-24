@@ -92,13 +92,13 @@ public class LazyMarge extends Thread {
 						signalObservers(result[0],result[1],result[2]);
 						break;
 					case AUTH :
-						//System.out.println("INCOMING AUTH="+result[2]+" MYIP="+LazyHomer.myip);
+						//System.out.println("BARNEY: INCOMING AUTH="+result[2]+" MYIP="+LazyHomer.myip);
 						if (result[2].equals(LazyHomer.myip)) {
 							ServiceHandler.instance().sendAuth();
 						}
 						break;
 					case PAUTH :
-						//System.out.println("INCOMING PAUTH="+result[2]);
+						//System.out.println("BARNEY: INCOMING PAUTH="+result[2]);
 						ServiceHandler.instance().setServiceAuth(result[2]);
 						break;
 					case LINK :
