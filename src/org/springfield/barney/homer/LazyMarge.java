@@ -33,7 +33,8 @@ import org.springfield.barney.ServiceHandler;
 
 
 public class LazyMarge extends Thread {
-	
+	private static final Logger logger = Logger.getLogger(LazyMarge.class);
+
 	String group = "224.0.0.0";
 	int errorcounter = 0;
 	int errorcounter2 = 0;
@@ -92,13 +93,11 @@ public class LazyMarge extends Thread {
 						signalObservers(result[0],result[1],result[2]);
 						break;
 					case AUTH :
-						//System.out.println("BARNEY: INCOMING AUTH="+result[2]+" MYIP="+LazyHomer.myip);
 						if (result[2].equals(LazyHomer.myip)) {
 							ServiceHandler.instance().sendAuth();
 						}
 						break;
 					case PAUTH :
-						//System.out.println("BARNEY: INCOMING PAUTH="+result[2]);
 						ServiceHandler.instance().setServiceAuth(result[2]);
 						break;
 					case LINK :
@@ -109,13 +108,13 @@ public class LazyMarge extends Thread {
 							String inc = result[0];
 							int pos = inc.indexOf(":");
 							if (pos==-1) {
-								System.out.println("BARNEY: FATAL ERROR OLD ADD SMITHERS STYLE (NOT IP:PORT:MPORT) "+inc);
+								LOG.fatal("BARNEY: FATAL ERROR OLD ADD SMITHERS STYLE (NOT IP:PORT:MPORT) "+inc);
 							} else {
 								String ipn = inc.substring(0,pos);
 								String pon = inc.substring(pos+1);
 								pos = pon.indexOf(":");
 								if (pos==-1) {
-									System.out.println("BARNEY: FATAL ERROR OLD ADD SMITHERS STYLE (NOT IP:PORT:MPORT) "+inc);	
+									LOG.fatal("BARNEY: FATAL ERROR OLD ADD SMITHERS STYLE (NOT IP:PORT:MPORT) "+inc);
 								} else {
 									String mpon = pon.substring(pos+1);
 									pon = pon.substring(0,pos);
@@ -130,34 +129,13 @@ public class LazyMarge extends Thread {
 								}
 							}
 						}
-						/*
-						if (result[2].equals("ALIVE")) {
-							String inc = result[0];
-							int pos = inc.indexOf(":");
-							if (pos==-1) {
-								System.out.println("BARNEY FATAL ERROR OLD ADD SMITHERS STYLE (NOT IP:PORT:MPORT) "+inc);
-							} else {
-								String ipn = inc.substring(0,pos);
-								String pon = inc.substring(pos+1);
-								pos = pon.indexOf(":");
-								if (pos==-1) {
-									System.out.println("BARNEY FATAL ERROR OLD ADD SMITHERS STYLE (NOT IP:PORT:MPORT) "+inc);	
-								} else {
-									String mpon = pon.substring(pos+1);
-									pon = pon.substring(0,pos);
-									LazyHomer.addSmithers(ipn,pon,mpon);
-								}
-							}
-						}
-						*/
 						break;
 					}
 				} catch(Exception e2) {	
 					if (running) {
 						if (errorcounter<10) {
 							errorcounter++;
-							LOG.info("ERROR Multicast innerloop");
-							e2.printStackTrace();
+							LOG.error("ERROR Multicast innerloop", e2);
 						}
 					}
 				}

@@ -30,9 +30,10 @@ import org.springfield.barney.homer.*;
 import org.springfield.fs.Fs;
 import org.springfield.fs.FsNode;
 import org.springfield.mojo.interfaces.*;
-import org.springfield.barney.PasswordHash;
+import org.apache.log4j.Logger;
 
 public class ServiceHandler implements ServiceInterface {
+	private static Logger LOG = Logger.getLogger(ServiceHandler.class);
 
 	private static ServiceHandler instance;
 	private static String spw = null;
@@ -58,28 +59,25 @@ public class ServiceHandler implements ServiceInterface {
 	}
 	
 	public String get(String uri,String fsxml,String mimetype) {
-		//System.out.println("BARNEY GET="+uri);
 		int pos = uri.indexOf("(");
 		if (pos!=-1) {
 			String command = uri.substring(0,pos);
 			String values = uri.substring(pos+1);
 			values = values.substring(0,values.length()-1);
 			String[] params = values.split(",");
-			System.out.println("BARNEY: COMMAND="+command+" VALUES="+values);
+			LOG.info("BARNEY: COMMAND="+command+" VALUES="+values);
 			return handleGetCommand(command,params);
 		}
 		return null;
 	}
 	
 	public String put(String uri,String value,String mimetype) {
-		//System.out.println("BARNEY PUT="+uri);
 		int pos = uri.indexOf("(");
 		if (pos!=-1) {
 			String command = uri.substring(0,pos);
 			String values = uri.substring(pos+1);
 			values = values.substring(0,values.length()-1);
 			String[] params = values.split(",");
-			//System.out.println("COMMAND="+command+" VALUES="+values);
 			return handlePutCommand(command,params,value);
 		}
 		return null;
@@ -121,12 +119,11 @@ public class ServiceHandler implements ServiceInterface {
 	}
 	
 	private String setPassword(String domain,String account,String password) {
-		//System.out.println("BARNEY SETPASSWORD "+domain+" "+account);
 		try {
 			ShadowFiles.setProperty("/domain/"+domain+"/user/"+account+"/account/default","password",PasswordHash.createHash(password));	
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.warn("Eating exception and continuing", e);
 		}
 		return null;
 	}
@@ -140,14 +137,14 @@ public class ServiceHandler implements ServiceInterface {
 	}
 	
 	private String checkTicket(String domain,String account,String ticket) {
-		System.out.println("BARNEY: CHECK TICKET "+domain+" "+account+" *"+ticket+"*");
+		LOG.debug("BARNEY: CHECK TICKET "+domain+" "+account+" *"+ticket+"*");
 		FsNode ticketnode = Fs.getNode("/domain/"+domain+"/user/"+account+"/account/default/ticket/1");
 		if (ticketnode!=null) {
 			String goal = ticketnode.getProperty("goal");
 			String random = ticketnode.getProperty("random");
 			if (random.equals("$shadow")) {
 				String sticket = ShadowFiles.getProperty("/domain/"+domain+"/user/"+account+"/account/default/ticket/1","random");	
-				System.out.println("BARNEY: Shadow ticket="+sticket);
+				LOG.debug("BARNEY: Shadow ticket="+sticket);
 				if (sticket.equals("")) return "false";
 				
 				try {
@@ -247,7 +244,7 @@ public class ServiceHandler implements ServiceInterface {
 	}
 	
 	private String createAccount(String domain,String account,String email,String password) {
-		System.out.println("BARNEY: Create account");
+		LOG.debug("BARNEY: Create account");
 		// create the needed nodes 
 		
 
@@ -288,14 +285,14 @@ public class ServiceHandler implements ServiceInterface {
 	}
 	
 	private String tryConfirmAccount(String domain,String account,String ticket) {
-		System.out.println("BARNEY: CONFIRM CHECK "+domain+" "+account+" *"+ticket+"*");
+		LOG.debug("BARNEY: CONFIRM CHECK "+domain+" "+account+" *"+ticket+"*");
 		FsNode ticketnode = Fs.getNode("/domain/"+domain+"/user/"+account+"/account/default/ticket/1");
 		if (ticketnode!=null) {
 			String goal = ticketnode.getProperty("goal");
 			String random = ticketnode.getProperty("random");
 			if (random.equals("$shadow")) {
 				String sticket = ShadowFiles.getProperty("/domain/"+domain+"/user/"+account+"/account/default/ticket/1","random");	
-				System.out.println("BARNEY: Shadow ticket="+sticket);
+				LOG.debug("BARNEY: Shadow ticket="+sticket);
 				try {
 					if (PasswordHash.validatePassword(ticket, sticket)) {
 						// ok we not confirm the account
@@ -384,7 +381,7 @@ public class ServiceHandler implements ServiceInterface {
 			try {
 				Thread.sleep(100);
 			} catch(Exception e) {
-				e.printStackTrace();
+				LOG.warn("Eating exception and continuing", e);
 			}
 			String cpws = spws.get(ipnumber);
 			if (cpws!=null) {
