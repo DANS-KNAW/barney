@@ -88,7 +88,7 @@ public class LazyHomer implements MargeObserver {
 			InetAddress mip=InetAddress.getLocalHost();
 			myip = ""+mip.getHostAddress();
 		}catch (Exception e){
-			LOG.error("BARNEY: Exception ="+e.getMessage(), e);
+			LOG.error("Exception ="+e.getMessage(), e);
 		}
 		LOG.info("Barney init service name = barney on ipnumber = "+myip);
 		marge = new LazyMarge();
@@ -102,12 +102,12 @@ public class LazyHomer implements MargeObserver {
 	public static void addSmithers(String ipnumber,String port,String mport,String role) {
 		int oldsize = smithers.size();
 		if (!(""+LazyHomer.getPort()).equals(mport)) {
-			LOG.warn("BARNEY: EXTREME WARNING CLUSTER COLLISION ("+LazyHomer.getPort()+") "+ipnumber+":"+port+":"+mport);
+			LOG.warn("EXTREME WARNING CLUSTER COLLISION ("+LazyHomer.getPort()+") "+ipnumber+":"+port+":"+mport);
 			return;
 		}
 		
 		if (!role.equals(getRole())) {
-			LOG.info("BARNEY: Ignored this smithers ("+ipnumber+") its "+role+" and not "+getRole()+" like us");
+			LOG.info("Ignored this smithers ("+ipnumber+") its "+role+" and not "+getRole()+" like us");
 			return;
 		}
 		
@@ -213,7 +213,7 @@ public class LazyHomer implements MargeObserver {
 					if (ipnumber.equals(myip)) {
 						foundmynode = true;
 						if (name.equals("unknown")) {
-							LOG.error("BARNEY: This barney is not verified change its name, use smithers todo this for ip "+myip);
+							LOG.error("This barney is not verified change its name, use smithers todo this for ip "+myip);
 						} else {
 							// so we have a name (verified) return true
 							iamok = true;
@@ -231,7 +231,7 @@ public class LazyHomer implements MargeObserver {
 					try{
 						os = System.getProperty("os.name");
 					} catch (Exception e){
-						LOG.error("BARNEY: LazyHomer : "+e.getMessage(), e);
+						LOG.error("LazyHomer : "+e.getMessage(), e);
 					}
 				
 					String newbody = "<fsxml>";
@@ -283,7 +283,7 @@ public class LazyHomer implements MargeObserver {
 			s.send(pack,(byte)ttl);
 			s.close();
 		} catch(Exception e) {
-			LOG.error("BARNEY: LazyHomer error "+e.getMessage(), e);
+			LOG.error("LazyHomer error "+e.getMessage(), e);
 		}
 	}
 	
@@ -341,7 +341,7 @@ public class LazyHomer implements MargeObserver {
  	}
 	
 	private void initConfig() {
-		LOG.info("BARNEY: initializing configuration.");
+		LOG.info("initializing configuration.");
 		
 		// properties
 		Properties props = new Properties();
@@ -354,13 +354,13 @@ public class LazyHomer implements MargeObserver {
 		
 		// load from file
 		try {
-			LOG.info("BARNEY: INFO: Loading config file from load : "+configfilename);
+			LOG.info("INFO: Loading config file from load : "+configfilename);
 			File file = new File(configfilename);
 
 			if (file.exists()) {
 				props.loadFromXML(new BufferedInputStream(new FileInputStream(file)));
 			} else { 
-				LOG.fatal("BARNEY: FATAL: Could not load config "+configfilename);
+				LOG.fatal("FATAL: Could not load config "+configfilename);
 			}
 		} catch (FileNotFoundException e) {
 			LOG.fatal("Could not find file even though we have just checked for its presence???", e);
@@ -387,7 +387,7 @@ public class LazyHomer implements MargeObserver {
 		if (emailSMTPPassword==null) emailSMTPPassword = "";
 		
 		
-		LOG.info("BARNEY: SERVER ROLE="+role);
+		LOG.info("SERVER ROLE="+role);
 	}
 	
 	

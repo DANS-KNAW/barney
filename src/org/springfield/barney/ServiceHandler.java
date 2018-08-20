@@ -65,7 +65,7 @@ public class ServiceHandler implements ServiceInterface {
 			String values = uri.substring(pos+1);
 			values = values.substring(0,values.length()-1);
 			String[] params = values.split(",");
-			LOG.info("BARNEY: COMMAND="+command+" VALUES="+values);
+			LOG.info("COMMAND="+command+" VALUES="+values);
 			return handleGetCommand(command,params);
 		}
 		return null;
@@ -137,14 +137,14 @@ public class ServiceHandler implements ServiceInterface {
 	}
 	
 	private String checkTicket(String domain,String account,String ticket) {
-		LOG.debug("BARNEY: CHECK TICKET "+domain+" "+account+" *"+ticket+"*");
+		LOG.debug("CHECK TICKET "+domain+" "+account+" *"+ticket+"*");
 		FsNode ticketnode = Fs.getNode("/domain/"+domain+"/user/"+account+"/account/default/ticket/1");
 		if (ticketnode!=null) {
 			String goal = ticketnode.getProperty("goal");
 			String random = ticketnode.getProperty("random");
 			if (random.equals("$shadow")) {
 				String sticket = ShadowFiles.getProperty("/domain/"+domain+"/user/"+account+"/account/default/ticket/1","random");	
-				LOG.debug("BARNEY: Shadow ticket="+sticket);
+				LOG.debug("Shadow ticket="+sticket);
 				if (sticket.equals("")) return "false";
 				
 				try {
@@ -244,7 +244,7 @@ public class ServiceHandler implements ServiceInterface {
 	}
 	
 	private String createAccount(String domain,String account,String email,String password) {
-		LOG.debug("BARNEY: Create account");
+		LOG.debug("Create account");
 		// create the needed nodes 
 		
 
@@ -285,14 +285,14 @@ public class ServiceHandler implements ServiceInterface {
 	}
 	
 	private String tryConfirmAccount(String domain,String account,String ticket) {
-		LOG.debug("BARNEY: CONFIRM CHECK "+domain+" "+account+" *"+ticket+"*");
+		LOG.debug("CONFIRM CHECK "+domain+" "+account+" *"+ticket+"*");
 		FsNode ticketnode = Fs.getNode("/domain/"+domain+"/user/"+account+"/account/default/ticket/1");
 		if (ticketnode!=null) {
 			String goal = ticketnode.getProperty("goal");
 			String random = ticketnode.getProperty("random");
 			if (random.equals("$shadow")) {
 				String sticket = ShadowFiles.getProperty("/domain/"+domain+"/user/"+account+"/account/default/ticket/1","random");	
-				LOG.debug("BARNEY: Shadow ticket="+sticket);
+				LOG.debug("Shadow ticket="+sticket);
 				try {
 					if (PasswordHash.validatePassword(ticket, sticket)) {
 						// ok we not confirm the account
