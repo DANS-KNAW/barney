@@ -46,11 +46,8 @@ public class BarneyServlet extends HttpServlet {
      */
     public BarneyServlet() {
         super();
-        System.out.println("BARNEY: servlet object created 2");
-		LazyHomer lh = new LazyHomer();
-        System.out.println("BARNEY: servlet object created 3 = "+lh);
+		    LazyHomer lh = new LazyHomer();
         lh.init("/");
-        System.out.println("BARNEY: servlet object created 4");
     }
     
 

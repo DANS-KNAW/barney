@@ -31,8 +31,10 @@ import javax.mail.internet.*;
 import org.springfield.barney.homer.LazyHomer;
 import org.springfield.fs.Fs;
 import org.springfield.fs.FsNode;
+import org.apache.log4j.Logger;
 
 public class SendTemplateMail {
+	private static Logger LOG = Logger.getLogger(SendTemplateMail.class);
 	
 	public static void sendSignupMail(String domain,String account,String ticketpassword,String path) {
 		// lets read the template 
@@ -81,7 +83,7 @@ public class SendTemplateMail {
 		        file.close();
 		    }
 		} catch(Exception e) {
-			e.printStackTrace();
+			LOG.warn("Eating exception and continuing", e);
 		}
 		
 		// so lets to some replace actions
@@ -108,7 +110,7 @@ public class SendTemplateMail {
 				transport.sendMessage(message, message.getAllRecipients());
 				transport.close();
 			} catch(Exception e) {
-				e.printStackTrace();
+				LOG.fatal("Fatal error", e);
 			}
 		} else if (LazyHomer.emailType.equals("direct")) {
 			try {
@@ -125,7 +127,7 @@ public class SendTemplateMail {
 				message.setContent(body, "text/plain");
 				Transport.send(message);
 			} catch(Exception e) {
-				e.printStackTrace();
+				LOG.warn("Eating exception and continuing", e);
 			}
 		}
 		
@@ -180,7 +182,7 @@ public class SendTemplateMail {
 		        file.close();
 		    }
 		} catch(Exception e) {
-			e.printStackTrace();
+			LOG.warn("Eating exception and continuing", e);
 		}
 		
 		// so lets to some replace actions
@@ -208,7 +210,7 @@ public class SendTemplateMail {
 				transport.sendMessage(message, message.getAllRecipients());
 				transport.close();
 			} catch(Exception e) {
-				e.printStackTrace();
+				LOG.warn("Eating exception and continuing", e);
 			}
 		} else if (LazyHomer.emailType.equals("direct")) {
 			try {
@@ -225,7 +227,7 @@ public class SendTemplateMail {
 				message.setContent(body, "text/plain");
 				Transport.send(message);
 			} catch(Exception e) {
-				e.printStackTrace();
+				LOG.warn("Eating exception and continuing", e);
 			}
 		}
 	}
@@ -267,7 +269,7 @@ public class SendTemplateMail {
 		        file.close();
 		    }
 		} catch(Exception e) {
-			e.printStackTrace();
+			LOG.warn("Eating exception and continuing", e);
 		}
 		
 		// so lets to some replace actions
@@ -295,7 +297,7 @@ public class SendTemplateMail {
 				transport.sendMessage(message, message.getAllRecipients());
 				transport.close();
 			} catch(Exception e) {
-				e.printStackTrace();
+				LOG.warn("Eating exception and continuing", e);
 			}
 		} else if (LazyHomer.emailType.equals("direct")) {
 			try {
@@ -312,7 +314,7 @@ public class SendTemplateMail {
 				message.setContent(body, "text/plain");
 				Transport.send(message);
 			} catch(Exception e) {
-				e.printStackTrace();
+				LOG.warn("Eating exception and continuing", e);
 			}
 		}
 	}
